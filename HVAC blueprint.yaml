@@ -1,6 +1,6 @@
 blueprint:
   name: Airco HVAC control.
-  description:  "`- Version: 0.1 -`\n\n This blueprint is for using the air conditioner automatically."
+  description:  "`- Version: 0.1.1 -`\n\n This blueprint is for using the air conditioner automatically."
   domain: automation
   input:
 
@@ -153,6 +153,7 @@ blueprint:
           - label: Sunday
             value: sun
           custom_value: false
+
 mode: parallel
 variables:
   target_temperature_start: !input target_temperature_start
@@ -161,6 +162,7 @@ variables:
   presence_home: !input presence_home
   include_weekdays: !input include_weekdays
   weekday_options: !input weekday_options
+
 trigger:
 - platform: numeric_state
   entity_id: !input climate
@@ -201,6 +203,7 @@ trigger:
       - not_home
       - home
   id: presence_home
+
 action:
 - alias: Activate climate
   if:
