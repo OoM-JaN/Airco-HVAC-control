@@ -212,7 +212,6 @@ action:
     - or: 
       - "{{ (trigger.id == 'climate_on' or (trigger.id == 'presence_home' and trigger.to_state.state == 'home')) and (state_attr(climate,'current_temperature')|float(0) < target_temperature_start|float(0) )}}"
   then:
-      - alias: Controllo finestra
       - service: climate.set_temperature
         data:
           entity_id: !input climate
