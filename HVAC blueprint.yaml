@@ -1,6 +1,6 @@
 blueprint:
   name: Airco HVAC control.
-  description:  "`- Version: 0.1.1 -`\n\n This blueprint is for using the air conditioner automatically."
+  description:  "`- Version: 0.1.2 -`\n\n This blueprint is for using the air conditioner automatically."
   domain: automation
   input:
 
@@ -95,21 +95,7 @@ blueprint:
       description: 'Set automatic operation end time.' 
       selector:
         time: 
-
-    include_weekdays:
-      name: Use The Weekdays Option (Optional)
-      description: This is used for adding a condition to only work on set weekdays.
-        This is a global option for all trigger conditions.
-      default: weekday_disabled
-      selector:
-        select:
-          options:
-          - label: Enable the weekday option
-            value: weekday_enabled
-          - label: Disable the weekday option
-            value: weekday_disabled
-          custom_value: false
-          multiple: false
+          
     weekday_options:
       name: Weekdays
       description: Select the days of the week you would like the automation to run.
@@ -140,7 +126,7 @@ blueprint:
             value: sat
           - label: Sunday
             value: sun
-          custom_value: false
+          custom_value: true
 
 mode: parallel
 variables:
