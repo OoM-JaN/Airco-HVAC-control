@@ -134,7 +134,6 @@ variables:
   climate: !input climate
   target_temperature_stop: !input target_temperature_stop
   presence_home: !input presence_home
-  include_weekdays: !input include_weekdays
   weekday_options: !input weekday_options
 
 trigger:
