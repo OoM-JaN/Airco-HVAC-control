@@ -3,7 +3,7 @@ blueprint:
   description:  >
     # This blueprint is for using the air conditioner automatically.
     
-    **Version: 0.2.0**
+    **Version: 0.2.1**
     
     Let us know what you think of this blueprint and for community support including updates: https://github.com/OoM-JaN/Airco-HVAC-control/tree/main
   domain: automation
@@ -16,6 +16,14 @@ blueprint:
         entity:
           domain: climate
 
+    presence_home:
+      name: Presence Home
+      description: 'Select the group consisting of person.' 
+      default: group.presence_home_disabled
+      selector:
+        entity:
+          domain: group
+          
     set_temperature_climate:
       name: Set temperature climate
       default: 22
@@ -54,14 +62,6 @@ blueprint:
             - low
             - mid
             - silent
-
-    presence_home:
-      name: Presence Home
-      description: 'Select the group consisting of person.' 
-      default: group.presence_home_disabled
-      selector:
-        entity:
-          domain: group
 
     target_temperature_start:
       name: Target temperature start
