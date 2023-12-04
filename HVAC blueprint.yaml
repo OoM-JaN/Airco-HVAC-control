@@ -3,9 +3,11 @@ blueprint:
   description:  >
     # This blueprint is for using the air conditioner automatically.
     
-    **Version: 0.2.1**
+    **Version: 0.2.2**
+
+    Automate your HVAC climate unit. Including presence detection.
     
-    Let us know what you think of this blueprint and for community support including updates: https://github.com/OoM-JaN/Airco-HVAC-control/tree/main
+    Let me know what you think of this blueprint: https://github.com/OoM-JaN/Airco-HVAC-control/tree/main
   domain: automation
   input:
 
@@ -37,7 +39,7 @@ blueprint:
           step: 0.5
 
     hvac_modes:
-      name: Hvac modes
+      name: HVAC modes
       description: 'Select the mode to be set to the air conditioner.' 
       default: heat
       selector:
