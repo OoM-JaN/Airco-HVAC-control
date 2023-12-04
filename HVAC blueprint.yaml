@@ -77,7 +77,7 @@ blueprint:
 
     target_temperature_stop:
       name: Target temperature stop
-      default: 21
+      default: 23
       description: 'Set the target temperature for shutdown.'
       selector:
         number:
