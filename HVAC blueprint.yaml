@@ -1,6 +1,10 @@
 blueprint:
   name: Airco HVAC control.
-  description:  "`- Version: 0.1.2 -`\n\n This blueprint is for using the air conditioner automatically."
+  description:  >
+    This blueprint is for using the air conditioner automatically.
+    ** Version: 0.1.2
+    
+    Let us know what you think of this blueprint and for community support including updates: https://github.com/OoM-JaN/Airco-HVAC-control/tree/main
   domain: automation
   input:
 
