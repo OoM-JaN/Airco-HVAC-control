@@ -81,18 +81,6 @@ blueprint:
           unit_of_measurement: °C
           mode: slider
           step: 1
-
-    delay_temperature_stop:
-      default: 10
-      name: Delay temperature stop
-      description: 'Set the climate shutdown delay since the target temperature has been reached.' 
-      selector:
-        number:
-          min: 0
-          max: 30
-          unit_of_measurement: min
-          mode: slider
-          step: 1
           
     start_time:
       name: Start time
@@ -174,20 +162,6 @@ trigger:
   attribute: current_temperature 
   below: !input target_temperature_start
   id: climate_on
-- platform: numeric_state
-  entity_id: !input climate
-  attribute: current_temperature 
-  below: !input target_temperature_stop
-  for: 
-    minutes: !input delay_temperature_stop
-  id: climate_off
-- platform: numeric_state
-  entity_id: !input climate
-  attribute: current_temperature 
-  above: !input target_temperature_stop
-  for: 
-    minutes: !input delay_temperature_stop
-  id: climate_off
 - platform: time
   at: !input stop_time
   id: climate_off
