@@ -169,10 +169,11 @@ trigger:
   id: presence_home
 
 condition:
-  - condition: and
-    - condition: time
-      weekday: !input weekday_options
-    -  "{{ include_weekdays == 'weekday_enabled' }}"
+  alias: "Weekday enabled"
+  condition: and
+  - condition: time
+    weekday: !input weekday_options
+  -  "{{ include_weekdays == 'weekday_enabled' }}"
 
 action:
 - alias: Activate climate
