@@ -1,1 +1,210 @@
+blueprint:
+  name: Airco HVAC control.
+  description:  >
+    # This blueprint is for using the air conditioner automatically.
+    
+    **Version: 0.3**
+    
+    Automate your HVAC climate unit. 
+    Including presence detection.
+    Including weekday selection
+    
+    Let me know what you think of this blueprint: https://github.com/OoM-JaN/Airco-HVAC-control/tree/main
+  domain: automation
+  input:
 
+    climate:
+      name: Entities climate
+      description: 'Select climate entities to be used.'
+      selector:
+        entity:
+          domain: climate
+
+    presence_home:
+      name: Presence Home
+      description: 'Select the group consisting of person.' 
+      default: group.presence_home_disabled
+      selector:
+        entity:
+          domain: group
+          
+    set_temperature_climate:
+      name: Set temperature climate
+      default: 22
+      description: 'Select the temperature to be set at climate.'
+      selector:
+        number:
+          min: 15
+          max: 30
+          unit_of_measurement: °C
+          mode: slider
+          step: 0.5
+
+    hvac_modes:
+      name: HVAC modes
+      description: 'Select the mode to be set to the air conditioner.' 
+      default: heat
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - heat
+            - cool
+            - dry
+            - fan_only
+
+    fan_modes:
+      name: Fan modes
+      description: 'Select the ventilation speed to be set at the air conditioner.' 
+      default: auto
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - auto
+            - high
+            - low
+            - mid
+
+    target_temperature_start:
+      name: Target temperature start
+      default: 18
+      description: 'Set the startup target temperature.' 
+      selector:
+        number:
+          min: 15
+          max: 30
+          unit_of_measurement: °C
+          mode: slider
+          step: 1
+
+    target_temperature_stop:
+      name: Target temperature stop
+      default: 23
+      description: 'Set the target temperature for shutdown.'
+      selector:
+        number:
+          min: 15
+          max: 30
+          unit_of_measurement: °C
+          mode: slider
+          step: 1
+          
+    start_time:
+      name: Start time
+      default: "00:00:00"
+      description: 'Set automatic operation start time.' 
+      selector:
+        time: 
+
+    stop_time:
+      name: Stop time
+      default: "00:00:00"
+      description: 'Set automatic operation end time.' 
+      selector:
+        time: 
+          
+    weekday_options:
+      name: Weekdays
+      description: Select the days of the week you would like the automation to run.
+      default:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+      selector:
+        select:
+          multiple: true
+          mode: list
+          options:
+          - label: Monday
+            value: mon
+          - label: Tuesday
+            value: tue
+          - label: Wednesday
+            value: wed
+          - label: Thursday
+            value: thu
+          - label: Friday
+            value: fri
+          - label: Saturday
+            value: sat
+          - label: Sunday
+            value: sun
+          custom_value: true
+
+mode: parallel
+variables:
+  target_temperature_start: !input target_temperature_start
+  climate: !input climate
+  target_temperature_stop: !input target_temperature_stop
+  presence_home: !input presence_home
+  weekday_options: !input weekday_options
+
+trigger:
+- platform: numeric_state
+  entity_id: !input climate
+  attribute: current_temperature
+  above: !input target_temperature_start
+  id: climate_on
+- platform: numeric_state 
+  entity_id: !input climate
+  attribute: current_temperature 
+  below: !input target_temperature_start
+  id: climate_on
+- platform: time
+  at: !input stop_time
+  id: climate_off
+- platform: time
+  at: !input start_time
+  id: climate_on
+- platform: state
+  entity_id: !input presence_home
+  from: 
+      - not_home
+      - home
+  to: 
+      - not_home
+      - home
+  id: presence_home
+
+condition:
+  - condition: time
+    weekday: !input weekday_options
+
+action:
+- alias: Activate climate
+  if:
+    - "{{is_state(climate,'off')}}"
+    - condition: time
+      after: !input start_time
+      before: !input stop_time
+    - "{{ states(presence_home) == 'home' or presence_home == 'group.presence_home_disabled'}}"
+    - or: 
+      - "{{ (trigger.id == 'climate_on' or (trigger.id == 'presence_home' and trigger.to_state.state == 'home')) and (state_attr(climate,'current_temperature')|float(0) < target_temperature_start|float(0) )}}"
+  then:
+      - service: climate.set_temperature
+        data:
+          entity_id: !input climate
+          temperature: !input set_temperature_climate
+          hvac_mode: !input hvac_modes
+      - delay: 
+          seconds: 1
+      - service: climate.set_fan_mode
+        data:
+          entity_id: !input climate
+          fan_mode: !input fan_modes
+- alias: Disabele climate
+  if: 
+    - "{{not is_state(climate,'off')}}"
+    - or: 
+      - "{{ trigger.id == 'presence_home' and trigger.to_state.state == 'not_home'}}"
+      - "{{ trigger.id == 'climate_off' and (state_attr(climate,'current_temperature')|float(0) > target_temperature_stop|float(0) )}}"
+      - "{{ trigger.id == 'climate_off' and trigger.platform == 'time'}}"
+  then:
+      - service: climate.turn_off
+        target:
+          entity_id: !input climate
