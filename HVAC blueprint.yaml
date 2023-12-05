@@ -3,7 +3,7 @@ blueprint:
   description:  >
     # This blueprint is for using the air conditioner automatically.
     
-    **Version: 0.2.4**
+    **Version: 0.2.5**
     
     Automate your HVAC climate unit. 
     Including presence detection.
@@ -170,11 +170,9 @@ trigger:
       - home
   id: presence_home
 
-condition: and
-conditions:
+condition:
   - condition: time
     weekday: !input weekday_options
-  -  "{{ include_weekdays == 'weekday_enabled' }}"
 
 action:
 - alias: Activate climate
