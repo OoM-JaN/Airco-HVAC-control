@@ -69,7 +69,7 @@ blueprint:
     target_temperature_start:
       name: Target temperature start
       default: 18
-      description: 'Set the startup target temperature.' 
+      description: 'Set the minimum start temperature.' 
       selector:
         number:
           min: 15
@@ -81,7 +81,7 @@ blueprint:
     target_temperature_stop:
       name: Target temperature stop
       default: 23
-      description: 'Set the target temperature for shutdown.'
+      description: 'Set the maximum temperature for shutdown.'
       selector:
         number:
           min: 15
