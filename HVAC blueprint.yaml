@@ -3,9 +3,10 @@ blueprint:
   description:  >
     # This blueprint is for using the air conditioner automatically.
     
-    **Version: 0.2.2**
-
-    Automate your HVAC climate unit. Including presence detection.
+    **Version: 0.2.3**
+    
+    Automate your HVAC climate unit. 
+    Including presence detection.
     
     Let me know what you think of this blueprint: https://github.com/OoM-JaN/Airco-HVAC-control/tree/main
   domain: automation
@@ -63,7 +64,6 @@ blueprint:
             - high
             - low
             - mid
-            - silent
 
     target_temperature_start:
       name: Target temperature start
@@ -170,13 +170,12 @@ trigger:
       - home
   id: presence_home
 
-condition:
-  alias: "Weekday enabled"
-  condition: and
-  conditions:
-    - condition: time
-      weekday: !input weekday_options
-    -  "{{ include_weekdays == 'weekday_enabled' }}"
+condition: and
+alias: "Weekday enabled"
+conditions:
+  - condition: time
+    weekday: !input weekday_options
+  -  "{{ include_weekdays == 'weekday_enabled' }}"
 
 action:
 - alias: Activate climate
