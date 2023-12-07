@@ -8,4 +8,4 @@ I remain open to feedback and any ideas to make this blueprint more usable for e
 
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://github.com/OoM-JaN/Airco-HVAC-control/blob/main/HVAC%20airco%20control.yaml)
 
-See also: [link].(https://community.home-assistant.io/t/hvac-airco-control-blueprint/650943)
+See also: https://community.home-assistant.io/t/hvac-airco-control-blueprint/650943
